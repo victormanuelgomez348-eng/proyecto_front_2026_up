@@ -1,0 +1,119 @@
+<div class="home-container">
+  <div *ngIf="successMessage" class="toast-notification">
+    <div class="toast-content">
+      <i class="fas fa-check-circle"></i>
+      <span>{{ successMessage }}</span>
+    </div>
+  </div>
+
+  <header class="hero-section">
+    <div class="hero-content">
+      <span class="badge-tag"><i class="fas fa-rocket"></i> Proyecto Social {{currentYear}}</span>
+      <h1>Uniremington <span>Al Parque</span></h1>
+      <p class="hero-subtitle">Gestión Social Inteligente para el Impacto Comunitario</p>
+    </div>
+
+    <div class="stats-container">
+      <div class="stat-card purple">
+        <div class="icon-box"><i class="fas fa-users"></i></div>
+        <div class="stat-info">
+          <h3>{{ totalBeneficiarios }}</h3>
+          <p>Beneficiarios</p>
+        </div>
+      </div>
+      <div class="stat-card red">
+        <div class="icon-box"><i class="fas fa-university"></i></div>
+        <div class="stat-info">
+          <h3>{{ totalEstudiantes }}</h3>
+          <p>Estudiantes</p>
+        </div>
+      </div>
+      <div class="stat-card blue">
+        <div class="icon-box"><i class="fas fa-hand-holding-heart"></i></div>
+        <div class="stat-info">
+          <h3>{{ totalServicios }}</h3>
+          <p>Servicios</p>
+        </div>
+      </div>
+      <div class="stat-card gold">
+        <div class="icon-box"><i class="fas fa-chart-line"></i></div>
+        <div class="stat-info">
+          <h3>{{ totalSeguimientos }}</h3>
+          <p>Seguimientos</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-grid">
+    <section class="forms-column">
+      <div class="glass-card">
+        <div class="card-header">
+          <i class="fas fa-user-plus"></i>
+          <h2>Registro de Beneficiario</h2>
+        </div>
+        <form [formGroup]="beneficiarioForm" (ngSubmit)="guardarBeneficiario()" class="modern-form">
+          <div class="input-group">
+            <input type="text" formControlName="documento" placeholder="Documento ID" required>
+            <input type="text" formControlName="nombre" placeholder="Nombres" required>
+          </div>
+          <div class="input-group">
+            <input type="text" formControlName="apellido" placeholder="Apellidos" required>
+            <input type="number" formControlName="edad" placeholder="Edad" required>
+          </div>
+          <select formControlName="genero">
+            <option value="" disabled selected>Seleccione Género</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+          </select>
+          <input type="text" formControlName="servicio" placeholder="Servicio Requerido">
+          <button type="submit" class="btn-submit main-btn">
+            Guardar Registro <i class="fas fa-arrow-right"></i>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section class="tables-column">
+      <div class="glass-card table-wrapper">
+        <div class="card-header">
+          <i class="fas fa-list-ul"></i>
+          <h2>Beneficiarios Recientes</h2>
+        </div>
+        <div class="custom-table-container">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>Beneficiario</th>
+                <th>Municipio</th>
+                <th>Servicio</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let b of beneficiarios" class="animate-row">
+                <td>
+                  <div class="user-cell">
+                    <span class="user-avatar">{{ b.nombre[0] }}</span>
+                    <div class="user-name">
+                      <strong>{{ b.nombre }} {{ b.apellido }}</strong>
+                      <small>{{ b.documento }}</small>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ b.municipio }}</td>
+                <td><span class="tag-service">{{ b.servicio }}</span></td>
+                <td>
+                  <div class="actions">
+                    <button class="btn-icon edit"><i class="fas fa-pen"></i></button>
+                    <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

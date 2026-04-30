@@ -1,0 +1,93 @@
+<section class="page">
+  <h2>Beneficiarios</h2>
+  <p class="subtitle">CRUD al backend con SpringBoot</p>
+
+  <div class="alerts">
+    @if (mensaje) {
+      <p class="success">{{ mensaje }}</p>
+    }
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+  </div>
+
+  <div class="search-box">
+    <input
+      type="text"
+      [formControl]="filtroDocumento"
+      placeholder="Buscar por documento"
+    />
+    <button type="button" (click)="buscarPorDocumento()">Buscar</button>
+    <button type="button" class="secondary" (click)="limpiarBusqueda()">Limpiar</button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()" class="form-grid">
+    <input type="text" formControlName="nombre" placeholder="Nombre" />
+    <input type="email" formControlName="correo" placeholder="Correo" />
+    <input type="text" formControlName="documento" placeholder="Documento" />
+    <input type="number" formControlName="edad" placeholder="Edad" />
+    <select formControlName="genero">
+      <option value="" disabled>Genero</option>
+      @for (genero of generos; track genero) {
+        <option [value]="genero">{{ genero }}</option>
+      }
+    </select>
+    <input type="text" formControlName="telefono" placeholder="Telefono" />
+    <input type="text" formControlName="municipio" placeholder="Municipio" />
+     <input type="text" formControlName="barrio" placeholder="Barrio/Vereda" />
+    <select formControlName="poblacion">
+      <option value="" disabled>Tipo de poblacion</option>
+      @for (tipo of tiposPoblacion; track tipo) {
+        <option [value]="tipo">{{ tipo }}</option>
+      }
+    </select>
+    <input type="text" formControlName="servicio" placeholder="Servicio" />
+
+    <div class="form-actions">
+      <button type="submit">{{ editandoId !== null ? 'Actualizar' : 'Crear' }}</button>
+      @if (editandoId !== null) {
+        <button type="button" class="secondary" (click)="cancelarEdicion()">Cancelar</button>
+      }
+    </div>
+  </form>
+
+  @if (cargando) {
+    <p>Cargando...</p>
+  } @else {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Documento</th>
+            <th>Municipio</th>
+            <th>Servicio</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (b of beneficiarios; track $index) {
+            <tr>
+              <td>{{ b.id }}</td>
+              <td>{{ b.nombre }}</td>
+              <td>{{ b.documento }}</td>
+              <td>{{ b.municipio }}</td>
+              <td>{{ b.servicio }}</td>
+              <td class="actions">
+                <button type="button" class="secondary" (click)="iniciarEdicion(b)">Editar</button>
+                <button type="button" class="danger" (click)="eliminar(b.id)">Eliminar</button>
+              </td>
+            </tr>
+          }
+
+          @if (!beneficiarios.length) {
+            <tr>
+              <td colspan="6" class="empty">No hay beneficiarios para mostrar</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

@@ -1,0 +1,37 @@
+<header class="navbar">
+  <div class="nav-content">
+    <a routerLink="/" class="logo">
+      <i class="fas fa-graduation-cap"></i>
+      <h2>UNIREMINGTON</h2>
+    </a>
+
+    <ul class="nav-links">
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a></li>
+      <li><a routerLink="/beneficiarios" routerLinkActive="active">Beneficiarios</a></li>
+      <li><a routerLink="/estudiantes" routerLinkActive="active">Estudiantes</a></li>
+      <li><a routerLink="/servicios-prestados" routerLinkActive="active">Servicios</a></li>
+      <li><a routerLink="/diagnosticos" routerLinkActive="active">Diagnósticos</a></li>
+      <li><a routerLink="/indicadores" routerLinkActive="active">Indicadores</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="javascript:void(0)" class="access-staff">Portal Staff</a>
+      <button class="btn-solicitar">
+        <i class="fas fa-user-shield"></i> Admin
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="main-container">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="footer-site"> ... </footer>
+
+<div class="remi-container">
+  <div class="remi-welcome-bubble">¡Hola! Soy Remi.</div>
+  <div class="remi-robot">
+    <img src="assets/remi-bot.png" alt="Remi" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4712/4712035.png'">
+  </div>
+</div>
