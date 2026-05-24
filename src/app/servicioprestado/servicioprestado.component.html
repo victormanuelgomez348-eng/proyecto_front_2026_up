@@ -1,83 +1,39 @@
-<section class="page">
-  <h2>Servicios Prestados</h2>
-  <p class="subtitle">Gestión de servicios prestados a beneficiarios</p>
+<div class="container">
+  <h2>Gestión de Servicios Prestados</h2>
 
-  <div class="alerts">
-    @if (mensaje) {
-      <p class="success">{{ mensaje }}</p>
-    }
-    @if (error) {
-      <p class="error">{{ error }}</p>
-    }
-  </div>
-
-  <div class="search-box">
-    <input
-      type="text"
-      [formControl]="filtroId"
-      placeholder="Buscar por ID de beneficiario"
-    />
-    <button type="button" (click)="buscarPorId()">Buscar</button>
-    <button type="button" class="secondary" (click)="limpiarBusqueda()">Limpiar</button>
-  </div>
-
-  <form [formGroup]="form" (ngSubmit)="guardar()" class="form-grid">
-    <input type="number" formControlName="idBeneficiario" placeholder="ID del Beneficiario" />
-    <input type="text" formControlName="descripcion" placeholder="Descripción del servicio" />
-    <input type="date" formControlName="fecha" placeholder="Fecha" />
-    <select formControlName="estado">
-      <option value="" disabled>Estado</option>
-      @for (estado of estados; track estado) {
-        <option [value]="estado">{{ estado }}</option>
-      }
-    </select>
-    <input type="text" formControlName="observaciones" placeholder="Observaciones" />
-
-    <div class="form-actions">
-      <button type="submit">{{ editandoId !== null ? 'Actualizar' : 'Crear' }}</button>
-      @if (editandoId !== null) {
-        <button type="button" class="secondary" (click)="cancelarEdicion()">Cancelar</button>
-      }
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <div class="form-group">
+      <input formControlName="servicio" placeholder="Servicio" />
+      <input formControlName="beneficiario" placeholder="Beneficiario" />
+      <input formControlName="documento" placeholder="Documento" />
+      <input formControlName="municipio" placeholder="Municipio" />
+      <input type="date" formControlName="fecha" />
     </div>
+
+    <button type="submit" [disabled]="form.invalid">
+      {{ editandoId ? 'Actualizar' : 'Guardar' }}
+    </button>
+
+    <button type="button" (click)="form.reset(); editandoId = null;">Cancelar</button>
   </form>
 
-  @if (cargando) {
-    <p class="loading">Cargando servicios...</p>
-  }
-
-  @if (!cargando && servicios.length === 0) {
-    <p class="empty">No hay servicios registrados</p>
-  }
-
-  @if (servicios.length > 0) {
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>ID Beneficiario</th>
-          <th>Descripción</th>
-          <th>Fecha</th>
-          <th>Estado</th>
-          <th>Observaciones</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (servicio of servicios; track servicio.id) {
-          <tr>
-            <td>{{ servicio.id }}</td>
-            <td>{{ servicio.idBeneficiario }}</td>
-            <td>{{ servicio.descripcion }}</td>
-            <td>{{ servicio.fecha | date:'dd/MM/yyyy' }}</td>
-            <td><span class="estado" [ngClass]="getEstadoClass(servicio.estado)">{{ servicio.estado }}</span></td>
-            <td>{{ servicio.observaciones || '-' }}</td>
-            <td class="actions">
-              <button type="button" (click)="editar(servicio)" class="edit">Editar</button>
-              <button type="button" (click)="eliminar(servicio.id)" class="delete">Eliminar</button>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  }
-</section>
+  <table>
+    <thead>
+      <tr>
+        <th>Servicio</th>
+        <th>Beneficiario</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let reg of registros">
+        <td>{{ reg.servicio }}</td>
+        <td>{{ reg.beneficiario }}</td>
+        <td>
+          <button (click)="editar(reg)">Editar</button>
+          <button (click)="eliminar(reg.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
