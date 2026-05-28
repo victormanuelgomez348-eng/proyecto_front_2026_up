@@ -27,6 +27,74 @@ export class AppComponent implements OnInit {
   isChatOpen: boolean = false;
   showWelcome: boolean = false;
   showDonacion: boolean = false;
+
+  // Estado del Modal de Facultades
+  showFacultadModal: boolean = false;
+
+  selectedFacultad!: { id: number; nombre: string; icono: string; color: string; descripcionCorta: string; descripcionLarga: string; carreras: string[]; urlWeb: string } | null;
+
+  facultades: Array<{
+    id: number;
+    nombre: string;
+    icono: string;
+    color: string;
+    descripcionCorta: string;
+    descripcionLarga: string;
+    carreras: string[];
+    urlWeb: string;
+  }> = [
+
+    {
+      id: 1, nombre: 'Ciencias de la Salud', icono: 'fa-hand-holding-medical', color: '#ef4444',
+      descripcionCorta: 'Líderes en formación humana y técnica para el bienestar integral.',
+      descripcionLarga: 'La Facultad de Ciencias de la Salud se enfoca en la formación de profesionales éticos, capaces de responder a los retos del sistema de salud actual con un alto sentido de responsabilidad social.',
+      carreras: ['Enfermería', 'Nutrición y Dietética', 'Medicina Veterinaria'],
+      urlWeb: 'https://www.uniremington.edu.co/facultad-de-ciencias-de-la-salud/'
+    },
+    {
+      id: 2, nombre: 'Ingeniería', icono: 'fa-laptop-code', color: '#3b82f6',
+      descripcionCorta: 'Innovación tecnológica y soluciones sostenibles para los retos del futuro.',
+      descripcionLarga: 'Nuestros programas de ingeniería integran la teoría con la práctica aplicada, preparando a los estudiantes para liderar proyectos tecnológicos e industriales.',
+      carreras: ['Ingeniería de Sistemas', 'Ingeniería Industrial', 'Ingeniería Civil'],
+      urlWeb: 'https://www.uniremington.edu.co/facultad-de-ingenieria/'
+    },
+    {
+      id: 3, nombre: 'Ciencias Jurídicas y Políticas', icono: 'fa-scale-balanced', color: '#1e293b',
+      descripcionCorta: 'Excelencia en la defensa de la justicia y los valores democráticos.',
+      descripcionLarga: 'Formamos abogados y líderes políticos con una sólida base jurídica, comprometidos con la equidad, los derechos humanos y la resolución pacífica de conflictos.',
+      carreras: ['Derecho', 'Gobierno y Relaciones Internacionales'],
+      urlWeb: 'https://www.uniremington.edu.co/facultad-de-ciencias-juridicas-y-politicas/'
+    },
+    {
+      id: 4, nombre: 'Ciencias Administrativas', icono: 'fa-chart-pie', color: '#f59e0b',
+      descripcionCorta: 'Gestión estratégica y liderazgo para el crecimiento empresarial.',
+      descripcionLarga: 'Preparamos a los futuros gerentes y contadores para navegar el mundo de los negocios globales con visión estratégica y eficiencia financiera.',
+      carreras: ['Administración de Empresas', 'Contaduría Pública', 'Negocios Internacionales'],
+      urlWeb: 'https://www.uniremington.edu.co/facultad-de-ciencias-administrativas-y-contables/'
+    },
+    {
+      id: 5, nombre: 'Ciencias Sociales y Humanas', icono: 'fa-users-line', color: '#8b5cf6',
+      descripcionCorta: 'Compromiso con el desarrollo social y la comprensión del ser humano.',
+      descripcionLarga: 'Exploramos la complejidad social y psicológica para generar transformaciones positivas en las comunidades y el bienestar individual.',
+      carreras: ['Psicología', 'Trabajo Social'],
+      urlWeb: 'https://www.uniremington.edu.co/facultad-de-ciencias-sociales-y-humanas/'
+    },
+    {
+      id: 6, nombre: 'Diseño y Comunicación', icono: 'fa-pen-nib', color: '#ec4899',
+      descripcionCorta: 'Creatividad y narrativa visual para transformar realidades.',
+      descripcionLarga: 'Fomentamos la expresión creativa y el uso de nuevas tecnologías para la comunicación efectiva y el diseño innovador.',
+      carreras: ['Diseño Gráfico', 'Comunicación Social y Periodismo'],
+      urlWeb: 'https://www.uniremington.edu.co/facultad-de-diseno/'
+    },
+    {
+      id: 7, nombre: 'Educación', icono: 'fa-chalkboard-user', color: '#10b981',
+      descripcionCorta: 'Pasión por la pedagogía y la formación de las nuevas generaciones.',
+      descripcionLarga: 'Nuestra facultad se dedica a formar docentes que inspiren y transformen la sociedad a través de modelos pedagógicos modernos y humanos.',
+      carreras: ['Licenciatura en Educación Infantil', 'Licenciatura en Educación Física'],
+      urlWeb: 'https://www.uniremington.edu.co/facultad-de-educacion/'
+    }
+  ];
+
   // Mobile menu state for header
   mobileMenuOpen: boolean = false;
   adminSidebarOpen: boolean = true;
@@ -176,7 +244,6 @@ export class AppComponent implements OnInit {
    */
   isAuthPage(): boolean {
     const authRoutes = ['/login', '/forgot-password', '/support'];
-    // Retorna true si la URL actual coincide con alguna ruta de auth
     return authRoutes.some(route => this.router.url.includes(route));
   }
 
@@ -189,9 +256,25 @@ export class AppComponent implements OnInit {
       '/admin',
       '/brigada-juridica',
       '/seguimiento',
-      '/docente'
+      // Nota: No incluimos '/servicios-prestados' ni '/estudiantes' aquí
+      // para que conserven el Header público con el botón de Logout y el Footer.
     ];
     return portalRoutes.some(route => this.router.url.startsWith(route));
+  }
+
+  /**
+   * Verifica si hay una sesión activa consultando el localStorage.
+   */
+  isLoggedIn(): boolean {
+    return localStorage.getItem('user_session') === 'true';
+  }
+
+  /**
+   * Limpia los datos de sesión y redirige al usuario a la página de inicio.
+   */
+  logout(): void {
+    localStorage.clear();
+    this.router.navigate(['/home']);
   }
 
   showPublicLayout(): boolean {
@@ -219,6 +302,30 @@ export class AppComponent implements OnInit {
    */
   toggleDonacion(): void {
     this.showDonacion = !this.showDonacion;
+  }
+
+  /** Abre el detalle de la facultad */
+  verFacultad(facultad: {
+    id: number;
+    nombre: string;
+    icono: string;
+    color: string;
+    descripcionCorta: string;
+    descripcionLarga: string;
+    carreras: string[];
+    urlWeb: string;
+  }): void {
+    this.selectedFacultad = facultad;
+    this.showFacultadModal = true;
+  }
+
+  /** Redirige al sitio oficial de la facultad */
+  irASitioOficial(url: string): void {
+    window.open(url, '_blank');
+  }
+
+  cerrarFacultadModal(): void {
+    this.showFacultadModal = false;
   }
 
   /** Toggle mobile navigation menu */

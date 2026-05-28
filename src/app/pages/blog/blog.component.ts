@@ -1,130 +1,43 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-
-type BlogCategory = 'Noticias' | 'Eventos' | 'Convocatorias';
-
-interface BlogPost {
-  id: number;
-  title: string;
-  excerpt: string;
-  category: BlogCategory;
-  date: string;
-  author: string;
-  image: string;
-  imageAlt: string;
-  featured?: boolean;
-}
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-blog',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './blog.component.html',
-  styleUrl: './blog.component.scss'
+  styleUrls: ['./blog.component.scss']
 })
 export class BlogComponent {
-  mostrarVentanaProfesional = false;
+  categories = ['Todos', 'Social', 'Académico', 'Institucional'];
+  selectedCategory = 'Todos';
 
-  readonly categories: Array<BlogCategory | 'Todos'> = [
-    'Todos',
-    'Noticias',
-    'Eventos',
-    'Convocatorias'
+  posts = [
+    { id: 1, title: 'Uniremington al Parque: Támesis 2026', category: 'Social',
+      image: 'assets/images/compromiso.jpg.jpg', content: 'Una jornada de integración donde la comunidad académica sale a los espacios públicos para ofrecer servicios gratuitos, orientación profesional y actividades lúdicas para toda la familia.', isFlipped: false },
+    { id: 2, title: 'Derechos Humanos y Paz', category: 'Social',
+      image: 'assets/images/asesoriadeclaracionderenta.jpg.jpg', content: 'Proyecto enfocado en la sensibilización y formación de líderes sociales. Trabajamos de la mano con las comunidades para promover la reconciliación y el respeto por los derechos fundamentales.', isFlipped: false },
+    { id: 3, title: 'Brigada de Salud', category: 'Social',
+      image: 'assets/images/brigadajuri.jpg.jpg', content: 'Nuestros estudiantes de medicina y enfermería brindan atención primaria, toma de presión y asesorías nutricionales totalmente gratuitas para las familias más vulnerables del municipio.', isFlipped: false },
+    { id: 4, title: 'Uniremington Reforesta', category: 'Social',
+      image: 'assets/images/medioambiente.jpg.jpg', content: 'Iniciativa de sostenibilidad ambiental enfocada en la siembra de árboles nativos y limpieza de cuencas hidrográficas locales con el apoyo de nuestros estudiantes.', isFlipped: false },
+    { id: 5, title: 'Consultorio Jurídico', category: 'Social',
+      image: 'assets/images/consultoriojuridico.jpg.jpg', content: 'Brindamos asesoría legal gratuita en temas de derecho civil, laboral y familiar para personas que no cuentan con los recursos para pagar un abogado privado.', isFlipped: false },
+    { id: 6, title: 'Alianzas Estratégicas', category: 'Académico',
+      image: 'assets/images/compromiso.jpg.jpg', content: 'Fortalecemos nuestro impacto firmando nuevos convenios con universidades internacionales y empresas líderes para garantizar mejores prácticas de aprendizaje.', isFlipped: false }
   ];
 
-  selectedCategory: BlogCategory | 'Todos' = 'Todos';
-
-  readonly posts: BlogPost[] = [
-    {
-      id: 1,
-      title: 'Ceremonia de la Luz alumbra el camino de estudiantes de Enfermeria',
-      excerpt: 'Una jornada academica y humana que resalta la vocacion de servicio, la etica profesional y el paso del conocimiento teorico a la practica.',
-      category: 'Noticias',
-      date: '30 abril 2026',
-      author: 'Bienestar Institucional',
-      image: 'assets/images/saludcomunitaria.jpg.jpg',
-      imageAlt: 'Estudiantes participando en una jornada de salud comunitaria',
-      featured: true
-    },
-    {
-      id: 2,
-      title: 'Profesores investigadores fortalecen la apropiacion social del conocimiento',
-      excerpt: 'La investigacion aplicada sigue conectando a docentes, estudiantes y comunidades por medio de resultados utiles para el territorio.',
-      category: 'Noticias',
-      date: '2 mayo 2026',
-      author: 'Investigaciones',
-      image: 'assets/images/impacto.jpg.jpg',
-      imageAlt: 'Equipo universitario en actividad de impacto social'
-    },
-    {
-      id: 3,
-      title: 'Apertura de nuevos espacios de conciliacion y orientacion juridica',
-      excerpt: 'Los consultorios y centros de conciliacion amplian el acceso ciudadano a soluciones pacificas, cercanas y guiadas por expertos.',
-      category: 'Noticias',
-      date: '5 mayo 2026',
-      author: 'Facultad de Ciencias Juridicas',
-      image: 'assets/images/consultoriojuridico.jpg.jpg',
-      imageAlt: 'Consultorio juridico con atencion a la comunidad'
-    },
-    {
-      id: 4,
-      title: 'Semana Internacional Uniremington 2026',
-      excerpt: 'Agenda cultural, academica y deportiva para que estudiantes y docentes conecten con experiencias globales desde sus sedes.',
-      category: 'Eventos',
-      date: '12 al 14 mayo 2026',
-      author: 'Uniremington Global',
-      image: 'assets/images/eventocomunitario.jpg.webp',
-      imageAlt: 'Evento comunitario universitario al aire libre'
-    },
-    {
-      id: 5,
-      title: 'Encuentro multicampus de semilleros de investigacion',
-      excerpt: 'Un espacio para presentar proyectos, compartir hallazgos y fortalecer redes academicas entre jovenes investigadores.',
-      category: 'Eventos',
-      date: '21 mayo 2026',
-      author: 'Semilleros',
-      image: 'assets/images/ingenieria.jpg.jpg',
-      imageAlt: 'Estudiantes trabajando en proyectos de ingenieria'
-    },
-    {
-      id: 6,
-      title: 'Convocatoria de movilidad academica para estudiantes',
-      excerpt: 'Oportunidades para vivir experiencias formativas en otras instituciones y enriquecer la ruta profesional.',
-      category: 'Convocatorias',
-      date: 'Hasta 31 mayo 2026',
-      author: 'Relaciones Internacionales',
-      image: 'assets/images/asesoriaambientalysostenible.jpg.jpg',
-      imageAlt: 'Estudiantes en actividad academica de sostenibilidad'
-    }
-  ];
-
-  get featuredPost(): BlogPost {
-    return this.posts.find(post => post.featured) ?? this.posts[0];
+  get filteredPosts() {
+    return this.selectedCategory === 'Todos'
+      ? this.posts
+      : this.posts.filter(p => p.category === this.selectedCategory);
   }
 
-  get filteredPosts(): BlogPost[] {
-    return this.posts.filter(post => {
-      return post.id !== this.featuredPost.id && (
-        this.selectedCategory === 'Todos' || post.category === this.selectedCategory
-      );
-    });
+  selectCategory(cat: string) {
+    this.selectedCategory = cat;
   }
 
-  selectCategory(category: BlogCategory | 'Todos'): void {
-    this.selectedCategory = category;
-  }
-
-  abrirVentanaProfesional(): void {
-    this.mostrarVentanaProfesional = true;
-  }
-
-  cerrarVentanaProfesional(): void {
-    this.mostrarVentanaProfesional = false;
-  }
-
-  contactar(): void {
-    // Placeholder: en un futuro se conectará con un flujo real de asesoría.
-    alert('Gracias. Un asesor profesional se contactará contigo pronto.');
-    this.cerrarVentanaProfesional();
+  toggleFlip(post: any) {
+    post.isFlipped = !post.isFlipped;
   }
 }

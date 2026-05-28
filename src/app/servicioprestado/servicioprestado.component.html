@@ -1,39 +1,62 @@
-<div class="container">
-  <h2>Gestión de Servicios Prestados</h2>
+<div class="services-page">
+  <header class="services-hero">
+    <span class="eyebrow">Gestión Institucional</span>
+    <h1>Servicios Prestados</h1>
+    <p>Registra la labor institucional con impacto social en el territorio.</p>
+  </header>
 
-  <form [formGroup]="form" (ngSubmit)="guardar()">
-    <div class="form-group">
-      <input formControlName="servicio" placeholder="Servicio" />
-      <input formControlName="beneficiario" placeholder="Beneficiario" />
-      <input formControlName="documento" placeholder="Documento" />
-      <input formControlName="municipio" placeholder="Municipio" />
-      <input type="date" formControlName="fecha" />
-    </div>
+  <div class="form-card">
+    <form [formGroup]="form" class="form-grid">
 
-    <button type="submit" [disabled]="form.invalid">
-      {{ editandoId ? 'Actualizar' : 'Guardar' }}
-    </button>
+      <label>
+        Facultad
+        <select formControlName="facultad">
+          <option value="" disabled selected>Seleccione...</option>
+          <option>Ingeniería</option>
+          <option>Ciencias Administrativas</option>
+          </select>
+      </label>
 
-    <button type="button" (click)="form.reset(); editandoId = null;">Cancelar</button>
-  </form>
+      <label>Servicio
+        <input formControlName="servicio" placeholder="Nombre del servicio">
+      </label>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Servicio</th>
-        <th>Beneficiario</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let reg of registros">
-        <td>{{ reg.servicio }}</td>
-        <td>{{ reg.beneficiario }}</td>
-        <td>
-          <button (click)="editar(reg)">Editar</button>
-          <button (click)="eliminar(reg.id)">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <label>Beneficiario
+        <input formControlName="beneficiario" placeholder="Nombre completo">
+      </label>
+
+      <label>Documento
+        <input formControlName="documento" placeholder="Número de identidad">
+      </label>
+
+      <label>Departamento
+        <input formControlName="departamento" placeholder="Ej: Antioquia">
+      </label>
+
+      <label>Municipio
+        <input formControlName="municipio" placeholder="Ej: Medellín">
+      </label>
+
+      <label>Vereda
+        <input formControlName="vereda" placeholder="Ej: La Loma">
+      </label>
+
+      <label>Barrio
+        <input formControlName="barrio" placeholder="Ej: Poblado">
+      </label>
+
+      <label>Contacto
+        <input formControlName="contacto" placeholder="Teléfono o email">
+      </label>
+
+      <label>Fecha
+        <input type="date" formControlName="fecha">
+      </label>
+
+      <div class="form-actions">
+        <button type="submit">Guardar Registro</button>
+      </div>
+
+    </form>
+  </div>
 </div>

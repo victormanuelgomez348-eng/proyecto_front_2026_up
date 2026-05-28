@@ -1,26 +1,63 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-solicitud-jornada',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HttpClientModule, FormsModule],
   templateUrl: './solicitud-jornada.component.html',
   styleUrls: ['./solicitud-jornada.component.scss']
 })
 export class SolicitudJornadaComponent {
 
-  constructor(private router: Router) {}
+  formData = {
+    entidad: '',
+    responsable: '',
+    whatsapp: '',
+    email: '',
+    lugar: 'Parque Principal',
+    poblacion: 0,
+    servicios: [] as string[],
+    infoAdicional: ''
+  };
+
+  isEnviando: boolean = false;
+
+  constructor(private router: Router, private http: HttpClient) {}
+
+  toggleServicio(servicio: string, event: any) {
+    if (event.target.checked) {
+      this.formData.servicios.push(servicio);
+    } else {
+      this.formData.servicios = this.formData.servicios.filter(s => s !== servicio);
+    }
+  }
 
   onSubmit(event: Event) {
     event.preventDefault();
+    this.isEnviando = true;
 
-    // Aquí iría la lógica para enviar a un servicio API
-    alert('¡Solicitud recibida! El equipo de Proyección Social se comunicará en un plazo de 48 horas.');
+    const payload = {
+      ...this.formData,
+      servicios: this.formData.servicios.join(', ')
+    };
 
-    // Redirigir al home después del éxito
-    this.router.navigate(['/home']);
+    // La URL debe coincidir exactamente con el @RequestMapping en tu controlador
+    this.http.post('http://localhost:8080/api/jornada', payload)
+      .subscribe({
+        next: () => {
+          alert('¡Solicitud recibida!');
+          this.router.navigate(['/home']);
+        },
+        error: (err: any) => {
+          console.error('Error al enviar:', err);
+          alert('Error al enviar la solicitud.');
+          this.isEnviando = false;
+        }
+      });
   }
 
   goBack() {

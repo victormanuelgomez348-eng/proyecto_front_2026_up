@@ -1,84 +1,52 @@
-<section class="blog-page">
-  <div class="blog-hero">
-    <div class="hero-copy">
-      <span class="section-kicker">Comunicaciones Uniremington</span>
-      <h1>Blog de noticias y vida universitaria</h1>
-      <p>
-        Informacion relevante para estudiantes, eventos academicos,
-        convocatorias y novedades que fortalecen la vida universitaria.
-      </p>
+<div class="blog-main-container">
+  <div class="section-header-modern">
+    <div class="header-content">
+      <span class="badge-premium">Actualidad Universitaria</span>
+      <h2>Noticias y Eventos <i class="fa-solid fa-newspaper"></i></h2>
+      <p>Descubre el impacto de Uniremington en la sociedad y la academia.</p>
     </div>
 
-    <article class="featured-post">
-      <img [src]="featuredPost.image" [alt]="featuredPost.imageAlt" loading="lazy">
-      <div class="featured-content">
-        <span class="post-category">{{ featuredPost.category }}</span>
-        <h2>{{ featuredPost.title }}</h2>
-        <p>{{ featuredPost.excerpt }}</p>
-        <div class="post-meta">
-          <span><i class="fa-solid fa-calendar-days"></i>{{ featuredPost.date }}</span>
-          <span><i class="fa-solid fa-user-pen"></i>{{ featuredPost.author }}</span>
-        </div>
-      </div>
-    </article>
-  </div>
-
-  <div class="blog-toolbar" aria-label="Filtros del blog">
-    <button
-      *ngFor="let category of categories"
-      type="button"
-      [class.active]="selectedCategory === category"
-      (click)="selectCategory(category)"
-    >
-      {{ category }}
-    </button>
-  </div>
-
-  <div class="content-grid">
-    <main class="post-list">
-      <article *ngFor="let post of filteredPosts" class="post-card">
-        <img [src]="post.image" [alt]="post.imageAlt" loading="lazy">
-        <div class="post-body">
-          <div class="post-head">
-            <span class="post-category">{{ post.category }}</span>
-            <span class="post-date">{{ post.date }}</span>
-          </div>
-          <h3>{{ post.title }}</h3>
-          <p>{{ post.excerpt }}</p>
-          <button type="button" class="read-more" (click)="abrirVentanaProfesional()">
-            Leer mas <i class="fa-solid fa-arrow-right"></i>
-          </button>
-        </div>
-      </article>
-    </main>
-
-    <aside class="student-panel" aria-label="Recursos para estudiantes">
-      <h2>Recursos para estudiantes</h2>
-      <p>Próximamente más recursos para la comunidad universitaria.</p>
-    </aside>
-  </div>
-  <div class="professional-modal-overlay" *ngIf="mostrarVentanaProfesional" (click)="cerrarVentanaProfesional()">
-    <div class="professional-modal" (click)="$event.stopPropagation()" role="dialog" aria-modal="true">
-      <button type="button" class="close-professional" (click)="cerrarVentanaProfesional()" aria-label="Cerrar">
-        <i class="fa-solid fa-xmark"></i>
+    <div class="blog-categories">
+      <button *ngFor="let cat of categories"
+              [class.active]="selectedCategory === cat"
+              (click)="selectCategory(cat)"
+              class="category-pill">
+        {{ cat }}
       </button>
+    </div>
+  </div>
 
-      <div class="professional-modal-body">
-        <span class="modal-eyebrow">Ventanilla profesional</span>
-        <h2>Profesional en línea</h2>
-        <p>
-          Selecciona un área y te compartimos la ruta recomendada según la información del blog.
-        </p>
+  <div class="posts-grid">
+    <div *ngFor="let post of filteredPosts"
+         class="flip-card"
+         [class.is-flipped]="post.isFlipped">
 
-        <div class="professional-actions">
-          <button type="button" class="btn btn-primary" (click)="contactar()">
-            Hablar con un asesor profesional
-          </button>
-          <button type="button" class="btn btn-secondary" (click)="cerrarVentanaProfesional()">
-            Volver al blog
-          </button>
+      <div class="flip-card-inner">
+        <div class="flip-card-front" [style.background-image]="'linear-gradient(rgba(0,0,0,0.3), rgba(0,51,102,0.85)), url(' + post.image + ')'">
+          <div class="card-front-content">
+            <span class="post-category-tag">{{ post.category }}</span>
+            <h3>{{ post.title }}</h3>
+            <button class="btn-flip-trigger" (click)="toggleFlip(post)">
+              Leer más <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="flip-card-back">
+          <div class="card-back-header">
+            <span class="post-category-tag light">{{ post.category }}</span>
+            <h4>{{ post.title }}</h4>
+          </div>
+          <div class="card-back-body">
+            <p>{{ post.content }}</p>
+          </div>
+          <div class="card-back-footer">
+            <button class="btn-flip-back" (click)="toggleFlip(post)">
+              <i class="fa-solid fa-arrow-left"></i> Volver
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>

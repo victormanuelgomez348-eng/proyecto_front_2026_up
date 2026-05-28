@@ -22,27 +22,27 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
 
   public services = [
-    { 
-      icon: 'fa-solid fa-user-graduate', 
-      title: 'Pregrados', 
+    {
+      icon: 'fa-solid fa-user-graduate',
+      title: 'Pregrados',
       description: 'Programas de formación profesional orientados a distintos proyectos de vida.',
       url: 'https://www.uniremington.edu.co/programa/pregrado.html'
     },
-    { 
-      icon: 'fa-solid fa-award', 
-      title: 'Posgrados', 
+    {
+      icon: 'fa-solid fa-award',
+      title: 'Posgrados',
       description: 'Opciones para fortalecer competencias, liderazgo y crecimiento académico.',
       url: 'https://www.uniremington.edu.co/especializaciones/'
     },
-    { 
-      icon: 'fa-solid fa-laptop-code', 
-      title: 'Modalidad virtual', 
+    {
+      icon: 'fa-solid fa-laptop-code',
+      title: 'Modalidad virtual',
       description: 'Rutas flexibles para aprender desde diferentes lugares con acompañamiento.',
       url: 'https://www.uniremington.edu.co/programa1/virtualidad-formulario/'
     },
-    { 
-      icon: 'fa-solid fa-universal-access', 
-      title: 'Accesibilidad', 
+    {
+      icon: 'fa-solid fa-universal-access',
+      title: 'Accesibilidad',
       description: 'Enfoque institucional en inclusión, cercanía y oportunidades académicas.',
       url: 'https://www.uniremington.edu.co/programa/pregrado.html'
     }
