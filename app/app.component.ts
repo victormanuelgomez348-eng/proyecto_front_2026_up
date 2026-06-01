@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { DonacionComponent } from './components/donacion/donacion.component';
 
-type RemiAction = 'home' | 'login' | 'jornada' | 'donacion' | 'game' | 'soporte' | 'dashboard';
+type RemiAction = 'home' | 'login' | 'jornada' | 'donacion' | 'game' | 'soporte' | 'dashboard' | 'blog';
 
 interface RemiResponse {
   title: string;
@@ -74,6 +74,11 @@ export class AppComponent implements OnInit {
       title: 'Panel — Acciones rápidas',
       message: 'Al acceder al panel administrativo, prioriza estas acciones:',
       steps: ['1) Revisa el resumen de métricas.', '2) Accede a gestión de usuarios o reportes.', '3) Descarga o exporta los datos necesarios.']
+    },
+    blog: {
+      title: 'Gestión de Noticias — Remi Control',
+      message: 'Desde el panel puedes publicar novedades e historias de impacto social:',
+      steps: ['1) Escribe un título atractivo.', '2) Sube una imagen clara (formato 16:9).', '3) Publica para actualizar el sitio automáticamente.']
     }
   };
 
@@ -146,6 +151,7 @@ export class AppComponent implements OnInit {
     if (url.startsWith('/login')) return 'login';
     if (url.startsWith('/contacto')) return 'soporte';
     if (url.startsWith('/donar') || url.includes('donacion')) return 'donacion';
+    if (url.startsWith('/blog') || url.startsWith('/admin/blog')) return 'blog';
     return 'home';
   }
 
@@ -195,7 +201,8 @@ export class AppComponent implements OnInit {
       '/admin',
       '/brigada-juridica',
       '/seguimiento',
-      '/docente'
+      '/docente',
+      '/admin/blog'
     ];
     return portalRoutes.some(route => this.router.url.startsWith(route));
   }
@@ -247,7 +254,8 @@ export class AppComponent implements OnInit {
       jornada: '/solicitar-jornada',
       game: '/remi-game',
       soporte: '/contacto',
-      dashboard: '/admin/dashboard'
+      dashboard: '/admin/dashboard',
+      blog: '/blog'
     };
 
     if (action === 'donacion') {

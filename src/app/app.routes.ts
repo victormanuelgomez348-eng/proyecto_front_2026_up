@@ -5,7 +5,6 @@ import { HomeComponent } from './home/home.component';
 import { BeneficiarioComponent } from './beneficiario/beneficiario.component';
 import { IndicadorComponent } from './indicador/indicador.component';
 import { SeguimientoComponent } from './seguimiento/seguimiento.component';
-import { ServicioPrestadoComponent } from './servicioprestado/servicioprestado.component';
 
 // Brigadas
 import { SaludComponent } from './salud/salud.component';
@@ -35,6 +34,7 @@ import { EstudiantesComponent } from './admin/estudiantes/estudiantes.component'
 import { ReportesComponent } from './admin/reportes/reportes.component';
 import { DocentesComponent } from './admin/docentes/docentes.component';
 
+
 export const routes: Routes = [
   // 1. RUTAS PÚBLICAS
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -49,29 +49,29 @@ export const routes: Routes = [
   { path: 'solicitar-jornada', component: SolicitudJornadaComponent },
 
   // 2. RUTAS PROTEGIDAS (Requieren Login)
-  { 
-    path: 'beneficiarios', 
-    component: BeneficiarioComponent, 
-    canActivate: [authGuard], 
-    data: { roles: ['admin', 'docente'] } 
+  {
+    path: 'beneficiarios',
+    component: BeneficiarioComponent,
+    canActivate: [authGuard],
+    data: { roles: ['admin', 'docente'] }
   },
-  { 
-    path: 'indicadores', 
-    component: IndicadorComponent, 
-    canActivate: [authGuard], 
-    data: { roles: ['admin', 'docente'] } 
+  {
+    path: 'indicadores',
+    component: IndicadorComponent,
+    canActivate: [authGuard],
+    data: { roles: ['admin', 'docente'] }
   },
-  { 
-    path: 'seguimientos', 
-    component: SeguimientoComponent, 
-    canActivate: [authGuard], 
-    data: { roles: ['admin', 'docente'] } 
+  {
+    path: 'seguimientos',
+    component: SeguimientoComponent,
+    canActivate: [authGuard],
+    data: { roles: ['admin', 'docente'] }
   },
-  { 
-    path: 'servicios-prestados', 
-    component: ServicioPrestadoComponent, 
-    canActivate: [authGuard], 
-    data: { roles: ['admin', 'docente', 'estudiante'] } 
+  {
+    path: 'servicios-prestados',
+    loadComponent: () => import('./servicioprestado/servicioprestado.component').then((m) => m.ServicioPrestadoComponent),
+    canActivate: [authGuard],
+    data: { roles: ['admin', 'docente', 'estudiante'] }
   },
 
   // Brigadas
@@ -90,6 +90,7 @@ export const routes: Routes = [
     data: { roles: ['admin'] },
     children: [
       { path: 'dashboard', component: DashboardComponent },
+      { path: 'blog', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'usuarios', component: EstudiantesComponent },
       { path: 'docentes', component: DocentesComponent },
       { path: 'reportes', component: ReportesComponent },
@@ -99,6 +100,7 @@ export const routes: Routes = [
 
   // 4. REDIRECCIONES
   { path: 'admin-dashboard', redirectTo: 'admin/dashboard', pathMatch: 'full' },
+  { path: 'admin/blog', redirectTo: 'admin/dashboard', pathMatch: 'full' },
   { path: 'docente', redirectTo: 'beneficiarios', pathMatch: 'full' },
   { path: 'estudiantes', redirectTo: 'servicios-prestados', pathMatch: 'full' },
   { path: '**', redirectTo: 'home' } // Ruta de comodín para manejo de errores 404

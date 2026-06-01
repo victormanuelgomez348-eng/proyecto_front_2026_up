@@ -730,3 +730,113 @@ $shadow-soft: 0 18px 55px rgba(15, 23, 42, 0.12);
   .virtual-assistant { right: 14px; bottom: 14px; width:72px; height:72px; }
   .virtual-assistant .assistant-badge { display:none; }
 }
+
+/* Blog/News Preview Section */
+.news-section {
+  padding: 80px 0;
+  background: #ffffff;
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px;
+    margin-top: 40px;
+  }
+
+  .news-card {
+    background: #f8fafc;
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    &:hover {
+      transform: translateY(-10px);
+      box-shadow: $shadow-soft;
+    }
+
+    .news-image {
+      height: 240px;
+      img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    }
+
+    &:hover .news-image img { transform: scale(1.08); }
+
+    .news-body {
+      padding: 30px;
+      h3 { color: $primary-blue; margin: 0 0 12px; font-size: 1.4rem; }
+      p { color: $text-muted; line-height: 1.6; margin-bottom: 20px; font-size: 1rem; }
+      .btn-read {
+        background: none; border: none; color: $primary-indigo; font-weight: 700;
+        cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 0;
+      }
+    }
+  }
+}
+
+/* ==========================================================================
+   VISTA ULTRA-WIDE PROFESIONAL (>= 1440px)
+   ========================================================================== */
+
+@media screen and (min-width: 1440px) {
+  .container {
+    max-width: 1600px; // Contenedor más amplio para pantallas modernas
+    padding: 0 40px;
+  }
+
+  .hero-section {
+    padding: 120px 0 80px;
+    min-height: 80vh; // El contenido principal ocupa gran parte de la pantalla
+    display: flex;
+    align-items: center;
+
+    .hero-grid {
+      grid-template-columns: 1.1fr 0.9fr; // Balance de pesos visuales
+      gap: 60px;
+    }
+
+    h1 {
+      font-size: clamp(5rem, 6.5vw, 7.5rem); // Tipografía masiva y fluida
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .hero-description {
+      font-size: 1.4rem;
+      max-width: 800px;
+      line-height: 1.7;
+    }
+
+    .hero-image-box,
+    .hero-carousel,
+    .carousel-track,
+    .slide-image-frame {
+      min-height: 720px; // Altura cinematográfica
+      border-radius: 48px; // Bordes más suaves en pantallas grandes
+    }
+  }
+
+  // Optimización de Grillas
+  .services-section {
+    .services-grid {
+      grid-template-columns: repeat(3, 1fr); // 3 columnas grandes se ven más elegantes que 4 apretadas
+      gap: 48px;
+    }
+
+    .service-card {
+      padding: 50px; // Más espacio interno
+    }
+  }
+
+  .impact-section,
+  .about-section,
+  .process-section {
+    padding: 160px 0; // Mucho más aire para separar conceptos
+  }
+
+  .metric-card {
+    padding: 40px;
+    .metric-value { font-size: 3.5rem; }
+    .metric-label { font-size: 1.1rem; }
+  }
+}

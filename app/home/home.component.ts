@@ -15,17 +15,20 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Nuevos campos de estadísticas actualizados
   public stats = [
-    { label: 'Comunidades Beneficiadas', value: 85, icon: 'fa-solid fa-hand-holding-heart', highlight: false },
-    { label: 'Jornadas Realizadas', value: 42, icon: 'fa-solid fa-calendar-check', highlight: false },
-    { label: 'Estudiantes Participantes', value: 500, icon: 'fa-solid fa-user-graduate', highlight: false },
-    { label: 'Historias de Éxito', value: '100+', icon: 'fa-solid fa-star', highlight: true }
+    { label: 'Comunidades Beneficiadas', value: 120, icon: 'fa-solid fa-hand-holding-heart', highlight: false },
+    { label: 'Jornadas Realizadas', value: 58, icon: 'fa-solid fa-calendar-check', highlight: false },
+    { label: 'Estudiantes Participantes', value: '750+', icon: 'fa-solid fa-user-graduate', highlight: false },
+    { label: 'Horas de Voluntariado', value: '2.5k', icon: 'fa-solid fa-clock', highlight: false },
+    { label: 'Historias de Éxito', value: '150+', icon: 'fa-solid fa-star', highlight: true }
   ];
 
   public services = [
     { icon: 'fa-solid fa-paw', title: 'Medicina Veterinaria', description: 'Consultas, vacunación y cuidado animal en campo.' },
     { icon: 'fa-solid fa-gavel', title: 'Asesoría Jurídica', description: 'Acompañamiento legal gratuito para la comunidad.' },
     { icon: 'fa-solid fa-brain', title: 'Psicología', description: 'Atención emocional y psicosocial en el territorio.' },
-    { icon: 'fa-solid fa-graduation-cap', title: 'Educación', description: 'Talleres y formación con enfoque social.' }
+    { icon: 'fa-solid fa-graduation-cap', title: 'Educación', description: 'Talleres y formación con enfoque social.' },
+    { icon: 'fa-solid fa-microscope', title: 'Investigación', description: 'Proyectos de ciencia aplicada para soluciones locales.' },
+    { icon: 'fa-solid fa-leaf', title: 'Sostenibilidad', description: 'Promoción de prácticas ambientales y cuidado del entorno.' }
   ];
 
   public currentStatIndex: number = 0;

@@ -273,7 +273,10 @@ export class AppComponent implements OnInit {
    * Limpia los datos de sesión y redirige al usuario a la página de inicio.
    */
   logout(): void {
-    localStorage.clear();
+    localStorage.removeItem('user_session');
+    localStorage.removeItem('user_role');
+    localStorage.removeItem('user_email');
+    localStorage.removeItem('user_name');
     this.router.navigate(['/home']);
   }
 

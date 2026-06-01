@@ -22,6 +22,10 @@
             <i class="fa-solid fa-right-to-bracket"></i>
             Acceder
           </button>
+          <button type="button" class="btn-secondary-action" (click)="verHistorias()">
+            <i class="fa-solid fa-newspaper"></i>
+            Blog de Noticias
+          </button>
         </div>
 
         <div class="hero-highlights">
@@ -122,6 +126,38 @@
 
       <div class="slider-dots">
         <button *ngFor="let _ of stats; let i = index" (click)="currentStatIndex = i" [class.active]="i === currentStatIndex" [attr.aria-label]="'Ir a estadística ' + (i + 1)"></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="news-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Actualidad</span>
+        <h2>Noticias y Novedades del Territorio</h2>
+      </div>
+
+      <div class="news-grid">
+        <article class="news-card">
+          <div class="news-image">
+            <img src="assets/images/eventocomunitario.jpg.webp" alt="Noticia" loading="lazy" />
+          </div>
+          <div class="news-body">
+            <h3>Impacto Social en Montería</h3>
+            <p>Se realizó la jornada número 85 con éxito total en servicios jurídicos.</p>
+            <button class="btn-read" (click)="verHistorias()">Leer más <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </article>
+        <article class="news-card">
+          <div class="news-image">
+            <img src="assets/images/jornadaveterinaria.jpg.jpg" alt="Noticia" loading="lazy" />
+          </div>
+          <div class="news-body">
+            <h3>Cuidado Animal en Copacabana</h3>
+            <p>Nuestros estudiantes atendieron a más de 120 especies en la última brigada.</p>
+            <button class="btn-read" (click)="verHistorias()">Leer más <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </article>
       </div>
     </div>
   </section>

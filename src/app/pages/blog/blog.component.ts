@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { BlogPost, BlogService } from '../../services/blog.services';
 
 @Component({
   selector: 'app-blog',
@@ -8,36 +10,40 @@ import { CommonModule } from '@angular/common';
   templateUrl: './blog.component.html',
   styleUrls: ['./blog.component.scss']
 })
-export class BlogComponent {
-  categories = ['Todos', 'Social', 'Académico', 'Institucional'];
+export class BlogComponent implements OnInit, OnDestroy {
+  categories = ['Todos', 'Social', 'Academico', 'Institucional'];
   selectedCategory = 'Todos';
+  posts: BlogPost[] = [];
+  private postsSubscription?: Subscription;
 
-  posts = [
-    { id: 1, title: 'Uniremington al Parque: Támesis 2026', category: 'Social',
-      image: 'assets/images/compromiso.jpg.jpg', content: 'Una jornada de integración donde la comunidad académica sale a los espacios públicos para ofrecer servicios gratuitos, orientación profesional y actividades lúdicas para toda la familia.', isFlipped: false },
-    { id: 2, title: 'Derechos Humanos y Paz', category: 'Social',
-      image: 'assets/images/asesoriadeclaracionderenta.jpg.jpg', content: 'Proyecto enfocado en la sensibilización y formación de líderes sociales. Trabajamos de la mano con las comunidades para promover la reconciliación y el respeto por los derechos fundamentales.', isFlipped: false },
-    { id: 3, title: 'Brigada de Salud', category: 'Social',
-      image: 'assets/images/brigadajuri.jpg.jpg', content: 'Nuestros estudiantes de medicina y enfermería brindan atención primaria, toma de presión y asesorías nutricionales totalmente gratuitas para las familias más vulnerables del municipio.', isFlipped: false },
-    { id: 4, title: 'Uniremington Reforesta', category: 'Social',
-      image: 'assets/images/medioambiente.jpg.jpg', content: 'Iniciativa de sostenibilidad ambiental enfocada en la siembra de árboles nativos y limpieza de cuencas hidrográficas locales con el apoyo de nuestros estudiantes.', isFlipped: false },
-    { id: 5, title: 'Consultorio Jurídico', category: 'Social',
-      image: 'assets/images/consultoriojuridico.jpg.jpg', content: 'Brindamos asesoría legal gratuita en temas de derecho civil, laboral y familiar para personas que no cuentan con los recursos para pagar un abogado privado.', isFlipped: false },
-    { id: 6, title: 'Alianzas Estratégicas', category: 'Académico',
-      image: 'assets/images/compromiso.jpg.jpg', content: 'Fortalecemos nuestro impacto firmando nuevos convenios con universidades internacionales y empresas líderes para garantizar mejores prácticas de aprendizaje.', isFlipped: false }
-  ];
+  constructor(private blogService: BlogService) {}
 
-  get filteredPosts() {
-    return this.selectedCategory === 'Todos'
-      ? this.posts
-      : this.posts.filter(p => p.category === this.selectedCategory);
+  ngOnInit(): void {
+    this.postsSubscription = this.blogService.posts$.subscribe((posts) => {
+      this.posts = posts;
+      this.categories = ['Todos', ...Array.from(new Set(posts.map((post) => post.category)))];
+
+      if (!this.categories.includes(this.selectedCategory)) {
+        this.selectedCategory = 'Todos';
+      }
+    });
   }
 
-  selectCategory(cat: string) {
+  ngOnDestroy(): void {
+    this.postsSubscription?.unsubscribe();
+  }
+
+  get filteredPosts(): BlogPost[] {
+    return this.selectedCategory === 'Todos'
+      ? this.posts
+      : this.posts.filter((p) => p.category === this.selectedCategory);
+  }
+
+  selectCategory(cat: string): void {
     this.selectedCategory = cat;
   }
 
-  toggleFlip(post: any) {
+  toggleFlip(post: BlogPost): void {
     post.isFlipped = !post.isFlipped;
   }
 }

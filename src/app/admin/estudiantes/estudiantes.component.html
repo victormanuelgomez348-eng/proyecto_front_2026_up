@@ -57,7 +57,7 @@
       <div class="form-group">
         <label for="facultad">Facultad</label>
         <select id="facultad" [(ngModel)]="estudianteForm.facultad" name="facultad" required class="select-field">
-          <option value="" disabled selected>Seleccionar facultad</option>
+<option value="" disabled>Seleccionar facultad</option>
           <option *ngFor="let facultad of facultades" [value]="facultad">{{ facultad }}</option>
         </select>
       </div>
@@ -105,7 +105,7 @@
             </div>
           </div>
           <div class="progress-bar">
-            <div class="progress-fill" [style.width.%]="fac.porcentaje"></div>
+<div class="progress-fill" [style.width]="fac.porcentaje + '%'" ></div>
           </div>
         </div>
       </div>
