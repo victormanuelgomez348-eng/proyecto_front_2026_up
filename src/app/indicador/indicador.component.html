@@ -1,34 +1,77 @@
 <div class="impact-wrapper">
-  <!-- HERO SECTION -->
   <section class="impact-hero">
     <div class="hero-content">
-      <span class="eyebrow">Indicadores institucionales</span>
+      <span class="eyebrow">
+        <i class="fa-solid fa-chart-simple"></i>
+        Indicadores institucionales
+      </span>
       <h1>Impacto social en cifras</h1>
       <p>Visualización clara del alcance y desempeño del proyecto Uniremington Al Parque.</p>
     </div>
 
     <div class="hero-metrics">
       <div class="metric-highlight">
-        <strong class="metric-value">{{ totalBeneficiarios | number }}</strong>
-        <span class="metric-label">Beneficiarios</span>
+        <i class="fa-solid fa-users-line"></i>
+        <div>
+          <strong class="metric-value">{{ totalBeneficiarios | number }}</strong>
+          <span class="metric-label">Beneficiarios</span>
+        </div>
       </div>
       <div class="metric-highlight teal">
-        <strong class="metric-value">{{ promedioAvance }}%</strong>
-        <span class="metric-label">Cumplimiento</span>
+        <i class="fa-solid fa-bullseye"></i>
+        <div>
+          <strong class="metric-value">{{ promedioAvance }}%</strong>
+          <span class="metric-label">Cumplimiento</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- STAT CARDS -->
-  <section class="stat-cards-grid">
-    <article class="stat-card" *ngFor="let indicador of indicadores; let i = index" [style.--delay]="i + 'ms'">
-      <div class="card-icon" [style.background]="indicador.color">
-        <i class="fa-solid" [ngClass]="indicador.icono"></i>
+  <section class="toolbar" aria-label="Herramientas de indicadores">
+    <div class="view-actions" role="group" aria-label="Cambiar vista">
+      <button type="button" [class.active]="vistaActiva === 'resumen'" (click)="cambiarVista('resumen')">
+        <i class="fa-solid fa-table-cells-large"></i>
+        Resumen
+      </button>
+      <button type="button" [class.active]="vistaActiva === 'cobertura'" (click)="cambiarVista('cobertura')">
+        <i class="fa-solid fa-map-location-dot"></i>
+        Cobertura
+      </button>
+      <button type="button" [class.active]="vistaActiva === 'facultades'" (click)="cambiarVista('facultades')">
+        <i class="fa-solid fa-chart-column"></i>
+        Facultades
+      </button>
+    </div>
+
+    <div class="area-actions" aria-label="Filtrar por área">
+      <button
+        type="button"
+        *ngFor="let area of opcionesArea"
+        [class.active]="areaSeleccionada === area"
+        (click)="seleccionarArea(area)"
+      >
+        {{ area }}
+      </button>
+    </div>
+
+    <button type="button" class="reset-button" (click)="limpiarFiltros()" title="Restablecer filtros">
+      <i class="fa-solid fa-rotate-left"></i>
+      Restablecer
+    </button>
+  </section>
+
+  <section class="stat-cards-grid" *ngIf="vistaActiva === 'resumen'">
+    <article class="stat-card" *ngFor="let indicador of indicadoresFiltrados; let i = index" [style.--delay]="i + 'ms'">
+      <div class="card-top">
+        <div class="card-icon" [style.background]="indicador.color">
+          <i class="fa-solid" [ngClass]="indicador.icono"></i>
+        </div>
+        <span class="area-pill">{{ indicador.area }}</span>
       </div>
       <div class="card-content">
         <span class="card-label">{{ indicador.nombre }}</span>
         <strong class="card-number">{{ indicador.valor | number }}</strong>
-        <small class="card-meta">de {{ indicador.meta | number }} {{ indicador.unidad }}</small>
+        <small class="card-meta">Meta: {{ indicador.meta | number }} {{ indicador.unidad }}</small>
       </div>
       <div class="card-progress">
         <div class="progress-bar">
@@ -38,23 +81,56 @@
             [style.background]="indicador.color"
           ></div>
         </div>
-        <span class="progress-text">{{ porcentaje(indicador) }}%</span>
+        <span class="progress-text">{{ porcentaje(indicador) }}% de avance</span>
       </div>
     </article>
   </section>
 
-  <!-- MAP SECTION -->
-  <section class="map-section">
+  <section class="map-section" *ngIf="vistaActiva === 'cobertura'">
     <div class="section-header">
-      <h2>Cobertura geográfica</h2>
-      <p>Municipios alcanzados por el programa de impacto social</p>
+      <div>
+        <h2>Cobertura geográfica</h2>
+        <p>Municipios alcanzados por el programa de impacto social</p>
+      </div>
+      <span class="coverage-count">{{ municipiosFiltrados.length }} municipios visibles</span>
     </div>
-    <div id="impact-map" class="impact-map"></div>
+
+    <div class="map-panel">
+      <div class="impact-map" aria-label="Mapa visual de municipios impactados">
+        <div class="map-shape"></div>
+        <button
+          type="button"
+          class="map-marker"
+          *ngFor="let municipio of municipiosFiltrados"
+          [style.top.%]="municipio.top"
+          [style.left.%]="municipio.left"
+          [style.--marker-color]="municipio.color"
+          [class.active]="municipioSeleccionado?.nombre === municipio.nombre"
+          (click)="seleccionarMunicipio(municipio)"
+          [title]="municipio.nombre"
+        >
+          <i class="fa-solid fa-location-dot"></i>
+        </button>
+      </div>
+
+      <aside class="municipio-detail">
+        <span class="detail-kicker">Municipio seleccionado</span>
+        <ng-container *ngIf="municipioSeleccionado; else noMunicipio">
+          <h3>{{ municipioSeleccionado.nombre }}</h3>
+          <p>{{ municipioSeleccionado.beneficiarios | number }} beneficiarios registrados.</p>
+          <span class="service-chip" [style.background]="municipioSeleccionado.color">
+            {{ municipioSeleccionado.servicio }}
+          </span>
+        </ng-container>
+        <ng-template #noMunicipio>
+          <h3>Selecciona un punto</h3>
+          <p>Haz clic en un marcador para ver el servicio y los beneficiarios del municipio.</p>
+        </ng-template>
+      </aside>
+    </div>
   </section>
 
-  <!-- ANALYTICS LAYOUT -->
-  <div class="analytics-grid">
-    <!-- CHARTS CARD -->
+  <div class="analytics-grid" *ngIf="vistaActiva === 'facultades'">
     <section class="analytics-card charts-card">
       <h2>Avance por facultad</h2>
       <p class="card-subtitle">Porcentaje de cumplimiento frente a metas de atención</p>
@@ -65,17 +141,12 @@
             <strong class="bar-percentage">{{ area.valor }}%</strong>
           </div>
           <div class="bar-track">
-            <div
-              class="bar-fill"
-              [style.width.%]="area.valor"
-              [style.background]="area.color"
-            ></div>
+            <div class="bar-fill" [style.width.%]="area.valor" [style.background]="area.color"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SUMMARY CARD -->
     <section class="analytics-card summary-card">
       <h2>Lectura rápida</h2>
       <div class="summary-content">
@@ -85,9 +156,9 @@
           <strong>{{ promedioAvance }}%</strong> frente a las metas actuales.
         </p>
         <ul class="summary-insights">
-          <li><i class="fas fa-check-circle"></i> <span>Veterinaria lidera con 91% de cumplimiento.</span></li>
-          <li><i class="fas fa-triangle-exclamation"></i> <span>Empresarial requiere refuerzo (61%).</span></li>
-          <li><i class="fas fa-chart-line"></i> <span>Cobertura en 14 municipios del área.</span></li>
+          <li><i class="fas fa-check-circle"></i> <span>{{ areaDestacada }} lidera el cumplimiento actual.</span></li>
+          <li><i class="fas fa-triangle-exclamation"></i> <span>Empresarial requiere refuerzo operativo.</span></li>
+          <li><i class="fas fa-chart-line"></i> <span>Cobertura consolidada en municipios priorizados.</span></li>
         </ul>
       </div>
     </section>

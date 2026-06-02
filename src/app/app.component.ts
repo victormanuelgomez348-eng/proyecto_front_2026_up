@@ -148,6 +148,7 @@ export class AppComponent implements OnInit {
 
   private routerNavSubscription: any;
   private remiOpenListener: any;
+  private donationOpenListener: any;
 
   @ViewChild('emailInput') emailInput!: ElementRef;
   @ViewChild('carouselTrack') carouselTrack!: ElementRef;
@@ -176,6 +177,8 @@ export class AppComponent implements OnInit {
     // Listen for global Remi open events
     this.remiOpenListener = () => this.toggleChat();
     window.addEventListener('openRemiChat', this.remiOpenListener);
+    this.donationOpenListener = () => this.showDonacion = true;
+    window.addEventListener('openDonationModal', this.donationOpenListener);
     // leave actual carousel start to AfterViewInit (DOM must exist)
   }
 
@@ -199,6 +202,7 @@ export class AppComponent implements OnInit {
     if (this.carouselIntervalId) clearInterval(this.carouselIntervalId);
     if (this.routerNavSubscription) this.routerNavSubscription.unsubscribe();
     if (this.remiOpenListener) window.removeEventListener('openRemiChat', this.remiOpenListener);
+    if (this.donationOpenListener) window.removeEventListener('openDonationModal', this.donationOpenListener);
   }
 
   private mapUrlToRemiAction(url: string): RemiAction {

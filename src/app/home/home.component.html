@@ -2,23 +2,25 @@
   <div class="hero-section">
     <div class="container hero-grid">
       <div class="hero-copy">
-        <span class="eyebrow">Institucion privada colombiana</span>
-        <h1>Uniremington Al Parque</h1>
+        <span class="eyebrow">Uniremington Al Parque</span>
+        <h1>Conexión U-P</h1>
         <p class="hero-description">
-          La Corporacion Universitaria Remington (Uniremington) es una institucion privada colombiana
-          fundada en 1915 en Medellin. Con mas de un siglo de trayectoria, ofrece educacion superior
-          en modalidades presencial, virtual y a distancia, con fuerte presencia en Antioquia.
+          Conexión U-P es nuestra página enfocada en Uniremington al Parque, acercando la formación
+          superior a la comunidad con servicios sociales, ambientales y de bienestar.
         </p>
         <p class="hero-description hero-description-strong">
-          Uniremington Al Parque presenta una experiencia cercana, clara e incluyente para conectar
-          la academia con las personas, resaltando sus pregrados, posgrados y su enfoque en la
-          accesibilidad academica.
+          Uniremington al Parque ofrece una experiencia cercana, profesional y transparente, con atención
+          en salud, derecho, ambiente, creación y empresa para el territorio.
         </p>
 
         <div class="hero-actions">
           <button type="button" class="btn-primary-action" (click)="verHistorias()">
             <i class="fa-solid fa-book-open"></i>
             Ver impacto
+          </button>
+          <button type="button" class="btn-secondary-action" (click)="openDonationModal()">
+            <i class="fa-solid fa-heart"></i>
+            Donar
           </button>
           <button type="button" class="btn-secondary-action" (click)="contactarEquipo()">
             <i class="fa-solid fa-headset"></i>
@@ -139,6 +141,61 @@
       </div>
     </div>
   </section>
+
+  <section class="faculty-section">
+    <div class="container-fluid">
+      <div class="section-header">
+        <span class="eyebrow">Facultades y servicios</span>
+        <h2>Las 7 líneas de atención que ofrecemos en Uniremington al Parque</h2>
+        <p>
+          Descubre cada facultad con una breve descripción y accede a los detalles en una ventana clara y adaptada para tablet, computador y celular.
+        </p>
+      </div>
+
+      <div class="faculty-grid">
+        <article class="faculty-card" *ngFor="let faculty of serviceFaculties" [style.--accent-color]="faculty.color" (click)="selectFaculty(faculty)" tabindex="0" role="button" (keydown.enter)="selectFaculty(faculty)">
+          <div class="faculty-icon" [style.--accent-color]="faculty.color"><i [ngClass]="faculty.icono"></i></div>
+          <h3>{{ faculty.nombre }}</h3>
+          <p class="description-short">{{ faculty.descripcionCorta }}</p>
+          <span class="learn-more">Ver detalles <i class="fa-solid fa-arrow-right"></i></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div *ngIf="selectedFaculty" class="faculty-modal-overlay" (click)="closeFacultyModal()">
+    <div class="faculty-modal-content" [style.--accent-color]="selectedFaculty.color" (click)="$event.stopPropagation()">
+      <button type="button" class="modal-close-btn" (click)="closeFacultyModal()" aria-label="Cerrar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="modal-header">
+        <div class="modal-icon-wrapper">
+          <div class="modal-icon"><i [ngClass]="selectedFaculty.icono"></i></div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-description">
+          <p class="short-desc">{{ selectedFaculty.descripcionCorta }}</p>
+          <p class="long-desc">{{ selectedFaculty.descripcionLarga }}</p>
+        </div>
+        <div class="modal-section">
+          <h3>Áreas clave</h3>
+          <div class="pilars-grid">
+            <div class="pilar-item" *ngFor="let pilar of selectedFaculty.pilares">
+              <span class="pilar-dot" [style.background]="selectedFaculty.color"></span>
+              {{ pilar }}
+            </div>
+          </div>
+        </div>
+        <div class="modal-section">
+          <h3>Servicios destacados</h3>
+          <ul class="carreras-list">
+            <li *ngFor="let item of selectedFaculty.carreras"><i class="fa-solid fa-check"></i>{{ item }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <section class="impact-section">
     <div class="container impact-grid">

@@ -590,25 +590,52 @@ button {
   animation-delay: 0.12s, 0.12s;
 }
 
-.antenna {
+.robot-cap {
   position: absolute;
-  top: -18px;
+  top: -16px;
   left: 50%;
-  width: 3px;
-  height: 18px;
-  background: #0f3d91;
+  width: 80px;
+  height: 34px;
   transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
 }
 
-.dot {
+.cap-top {
+  width: 92px;
+  height: 28px;
+  border-radius: 50% 50% 40% 40% / 110% 110% 65% 65%;
+  background: linear-gradient(145deg, #101010, #2d2d2d);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 4px 10px rgba(255, 255, 255, 0.08), 0 8px 18px rgba(0, 0, 0, 0.22);
+  position: relative;
+}
+
+.cap-logo {
   position: absolute;
-  top: -7px;
-  left: 50%;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: #e63946;
-  transform: translateX(-50%);
+  bottom: 4px;
+  right: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+}
+
+.cap-brim {
+  width: 100px;
+  height: 14px;
+  border-radius: 999px / 50%;
+  background: linear-gradient(135deg, #1a1a1a, #3b3b3b);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.25);
 }
 
 .pulse-red {
@@ -1085,5 +1112,20 @@ button {
 
   .footer-grid {
     grid-template-columns: 1fr;
+  }
+}
+/* --- Ajuste de espacio en Redes Sociales --- */
+.social-links {
+  display: flex;
+  gap: 20px;       /* Aumenta este valor para más distancia entre iconos */
+  margin-top: 15px; /* Separa los iconos del título "Siguenos" */
+
+  a {
+    font-size: 1.5rem; /* Opcional: hace los iconos un poco más grandes */
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
   }
 }
