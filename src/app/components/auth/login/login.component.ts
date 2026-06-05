@@ -2,16 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { UserService } from '../../../user.service';
-
-interface UsuarioLogin {
-  nombre?: string;
-  apellido?: string;
-  email?: string;
-  facultad?: string;
-  especialidad?: string;
-  role?: string;
-}
+import { UserService } from '../../../user.service'; // Asegúrate de que esta ruta sea la correcta en tu proyecto
 
 @Component({
   selector: 'app-login',
@@ -31,36 +22,45 @@ export class LoginComponent {
     const pass = this.loginData.pass.trim();
 
     if (!email || !pass) {
-      alert('Por favor, ingresa tu correo y contraseña.');
+      alert('Por favor, ingresa correo y contraseña.');
       return;
     }
 
-    // ACCESO DE EMERGENCIA (Bypass para Admin 123)
-    if (email === 'admin' && pass === '123') {
-      this.guardarSesion('admin', email, { nombre: 'Administrador', apellido: 'General' });
-      this.router.navigate(['/admin/dashboard']);
-      return;
-    }
-
-    // AUTENTICACIÓN REAL
     this.userService.login({ email, pass }).subscribe({
       next: (userData: any) => {
-        const role = (userData.role || 'estudiante').toLowerCase().trim();
-        this.guardarSesion(role, email, userData);
+        // 1. Depuración: Vemos qué trae el servidor
+        console.log("Respuesta del servidor:", userData);
 
-        if (role === 'admin' || role === 'administrador') this.router.navigate(['/admin/dashboard']);
-        else if (role === 'docente') this.router.navigate(['/docente']);
-        else this.router.navigate(['/estudiantes']);
+        // 2. Normalizamos el rol (buscamos 'role' o 'rol' y convertimos a minúsculas)
+        const rol = (userData.role || userData.rol || '').toLowerCase().trim();
+
+        // 3. Redirección independiente según el rol
+        switch (rol) {
+          case 'administrador':
+          case 'admin':
+            this.router.navigate(['/admin/dashboard']);
+            break;
+
+          case 'docente':
+            // Ahora docente va a su vista propia configurada en app.routes.ts
+            this.router.navigate(['/docente']);
+            break;
+
+          case 'estudiante':
+            // Estudiante va a su vista propia
+            this.router.navigate(['/servicios-prestados']);
+            break;
+
+          default:
+            alert('Error: El usuario entró, pero el sistema no reconoce el rol: "' + rol + '"');
+            console.error('Rol recibido no mapeado:', rol);
+            break;
+        }
       },
-      error: () => alert('Credenciales inválidas o error de servidor.')
+      error: (err) => {
+        console.error("Error en login:", err);
+        alert('Credenciales incorrectas o error de servidor. Verifica en la consola (F12).');
+      }
     });
-  }
-
-  private guardarSesion(role: string, email: string, usuario?: UsuarioLogin): void {
-    const nombre = usuario ? `${usuario.nombre || ''} ${usuario.apellido || ''}`.trim() : email;
-    localStorage.setItem('user_session', 'true');
-    localStorage.setItem('user_role', role);
-    localStorage.setItem('user_email', email);
-    localStorage.setItem('user_name', nombre);
   }
 }

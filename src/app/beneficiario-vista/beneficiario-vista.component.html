@@ -1,0 +1,38 @@
+<div class="dashboard-wrapper">
+  <aside class="sidebar">
+    <div class="user-profile">
+      <div class="avatar"><i class="bi bi-person-circle"></i></div>
+      <h3>{{ usuarioLogueado?.nombre }}</h3>
+      <p>{{ usuarioLogueado?.rol }}</p>
+    </div>
+    <nav>
+      <a class="active"><i class="bi bi-house-door"></i> Inicio</a>
+      <a><i class="bi bi-file-earmark-text"></i> Mis Servicios</a>
+      <a (click)="logout()" class="logout"><i class="bi bi-box-arrow-right"></i> Salir</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header>
+      <h1>Panel del Beneficiario</h1>
+      <p>Gestiona tus servicios y consulta tu información en tiempo real.</p>
+    </header>
+
+    <div class="stats-grid">
+      <div class="card premium-card">
+        <h4>Servicios Activos</h4>
+        <div class="value">05</div>
+      </div>
+      <div class="card premium-card">
+        <h4>Notificaciones</h4>
+        <div class="value">02</div>
+      </div>
+    </div>
+
+    <section class="card wide-card">
+      <h3>Detalle de mi perfil</h3>
+      <p><strong>Identificación:</strong> {{ usuarioLogueado?.tipoDocumento }} - {{ usuarioLogueado?.numeroDocumento }}</p>
+      <p><strong>Correo:</strong> {{ usuarioLogueado?.email }}</p>
+    </section>
+  </main>
+</div>
