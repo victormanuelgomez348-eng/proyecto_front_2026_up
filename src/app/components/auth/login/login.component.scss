@@ -128,3 +128,13 @@
   .auth-sidebar { padding: 30px; }
   .auth-form-section { padding: 30px; }
 }
+
+.auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #f0f2f5; padding: 20px; }
+.auth-card { display: flex; width: 100%; max-width: 1000px; height: 600px; background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
+.auth-sidebar { flex: 1; background: #002d5d; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; }
+.brand-logo-white { width: 150px; height: 150px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; img { width: 100px; } }
+.auth-form-section { flex: 1.2; padding: 60px; display: flex; flex-direction: column; }
+.input-group input { width: 100%; padding: 15px 20px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 15px; margin-bottom: 15px; }
+.btn-primary-auth { width: 100%; padding: 16px; background: #003566; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
+.highlight-red { color: #e30613; }
+@media (max-width: 768px) { .auth-card { flex-direction: column; height: auto; } }

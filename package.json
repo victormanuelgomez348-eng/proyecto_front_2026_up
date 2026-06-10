@@ -1,9 +1,9 @@
 {
   "name": "proyectobackenduniremington2026-front",
   "version": "0.0.0",
-  "scripts": {
+ "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port 4300",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

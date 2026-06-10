@@ -3,17 +3,22 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environments';
 
-interface UsuarioLogin {
+// Definimos una interfaz clara para las credenciales de login
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+export interface UsuarioLogin {
+  id?: number;
   nombre?: string;
   apellido?: string;
   email?: string;
-  // correo?: string; // Eliminado, 'email' es el campo estándar
   documento?: string;
   facultad?: string;
   especialidad?: string;
   password?: string;
   activo?: boolean;
-  id?: number;
   role?: string;
 }
 
@@ -34,7 +39,7 @@ interface JornadaRequest {
   municipio: string;
   comunidad: string;
   descripcionNecesidad: string;
-  fechaSolicitud?: string; // Formato YYYY-MM-DD
+  fechaSolicitud?: string;
 }
 
 @Injectable({
@@ -45,15 +50,13 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  login(credentials: { email: string; pass: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/login`, {
-      email: credentials.email,
-      password: credentials.pass
-    });
+  // CORREGIDO: Ahora recibe LoginCredentials y envía el objeto correctamente
+  login(credentials: LoginCredentials): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/login`, credentials);
   }
 
   // =====================
-  // ESTUDIANTES (Usuarios)
+  // ESTUDIANTES
   // =====================
   getStudents(): Observable<Estudiante[]> {
     return this.http.get<Estudiante[]>(`${this.apiUrl}/admin/students`);
@@ -68,7 +71,7 @@ export class UserService {
   }
 
   // =====================
-  // DOCENTES  ✅ CORREGIDO
+  // DOCENTES
   // =====================
   getTeachers(): Observable<UsuarioLogin[]> {
     return this.http.get<UsuarioLogin[]>(`${this.apiUrl}/docentes`);

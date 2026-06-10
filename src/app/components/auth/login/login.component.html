@@ -14,16 +14,30 @@
       <h2>Iniciar Sesión</h2>
       <p class="subtitle">Ingresa tus credenciales de acceso</p>
 
-      <form (ngSubmit)="onLogin($event)">
+      <form (ngSubmit)="onLogin()">
+
         <div class="input-group">
-          <input type="text" placeholder="Usuario o Correo" name="user" [(ngModel)]="loginData.user" required>
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            name="email"
+            [(ngModel)]="loginData.email"
+            required>
         </div>
+
         <div class="input-group">
-          <input type="password" placeholder="Contraseña" name="pass" [(ngModel)]="loginData.pass" required>
+          <input
+            type="password"
+            placeholder="Contraseña"
+            name="password"
+            [(ngModel)]="loginData.password"
+            required>
         </div>
 
         <div style="text-align: right; margin-bottom: 30px;">
-          <a routerLink="/forgot-password" style="color: #64748b; text-decoration: none; font-size: 0.9rem;">¿Olvidaste tu contraseña?</a>
+          <a routerLink="/forgot-password" style="color: #64748b; text-decoration: none; font-size: 0.9rem;">
+            ¿Olvidaste tu contraseña?
+          </a>
         </div>
 
         <button type="submit" class="btn-primary-auth">Ingresar al Sistema</button>

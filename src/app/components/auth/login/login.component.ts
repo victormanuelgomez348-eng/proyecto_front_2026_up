@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { UserService } from '../../../user.service'; // Asegúrate de que esta ruta sea la correcta en tu proyecto
+import { UserService, LoginCredentials } from '../../../user.service';
 
 @Component({
   selector: 'app-login',
@@ -12,54 +12,55 @@ import { UserService } from '../../../user.service'; // Asegúrate de que esta r
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  loginData = { user: '', pass: '' };
+  // Inicializamos con los campos que espera el backend
+  loginData: LoginCredentials = {
+    email: '',
+    password: ''
+  };
 
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(
+    private router: Router,
+    private userService: UserService
+  ) {}
 
-  onLogin(event: Event) {
-    event.preventDefault();
-    const email = this.loginData.user.trim().toLowerCase();
-    const pass = this.loginData.pass.trim();
-
-    if (!email || !pass) {
-      alert('Por favor, ingresa correo y contraseña.');
+  onLogin() {
+    // 1. Validación básica antes de enviar
+    if (!this.loginData.email || !this.loginData.password) {
+      alert('Por favor, ingresa el correo y la contraseña.');
       return;
     }
 
-    this.userService.login({ email, pass }).subscribe({
+    // 2. Llamada al servicio
+    this.userService.login(this.loginData).subscribe({
       next: (userData: any) => {
-        // 1. Depuración: Vemos qué trae el servidor
-        console.log("Respuesta del servidor:", userData);
+        console.log("Login exitoso. Datos recibidos:", userData);
 
-        // 2. Normalizamos el rol (buscamos 'role' o 'rol' y convertimos a minúsculas)
-        const rol = (userData.role || userData.rol || '').toLowerCase().trim();
+        // 3. Guardar información de sesión en el navegador
+        localStorage.setItem('user_session', JSON.stringify(userData));
+        localStorage.setItem('user_role', userData.role || 'estudiante');
 
-        // 3. Redirección independiente según el rol
+        // 4. Redirección basada en el rol recibido del servidor
+        const rol = (userData.role || '').toLowerCase().trim();
+
         switch (rol) {
-          case 'administrador':
           case 'admin':
             this.router.navigate(['/admin/dashboard']);
             break;
-
           case 'docente':
-            // Ahora docente va a su vista propia configurada en app.routes.ts
             this.router.navigate(['/docente']);
             break;
-
           case 'estudiante':
-            // Estudiante va a su vista propia
             this.router.navigate(['/servicios-prestados']);
             break;
-
           default:
-            alert('Error: El usuario entró, pero el sistema no reconoce el rol: "' + rol + '"');
-            console.error('Rol recibido no mapeado:', rol);
+            this.router.navigate(['/home']);
             break;
         }
       },
       error: (err) => {
-        console.error("Error en login:", err);
-        alert('Credenciales incorrectas o error de servidor. Verifica en la consola (F12).');
+        console.error("Error de autenticación:", err);
+        // Si el backend devuelve 401, aquí es donde lo capturas
+        alert('Credenciales incorrectas. Por favor, verifica tu correo y contraseña.');
       }
     });
   }
